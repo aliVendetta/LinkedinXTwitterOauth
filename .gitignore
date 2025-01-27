@@ -1,2 +1,82 @@
-.*pyc
-.__pyc__
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Database migrations (if you want to exclude them)
+# migrations/
+
+# Static files collected by `collectstatic`
+/static/
+
+# Local development settings
+settings/local.py
+settings/dev.py
+
+# macOS files
+.DS_Store
+
+# Node.js and npm
+node_modules/
+npm-debug.log*
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# PyCharm files
+*.iml
+
+# PyTest cache
+.pytest_cache/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# PyInstaller
+*.spec
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Logs
+logs/
+
+.env.local
+.env.dev
+.env.prod
+
+# Backup files
+*.bak
+*.backup
+
+# System files
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini

@@ -1,3 +1,5 @@
+import base64
+
 from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -113,3 +115,59 @@ class TwitterAuthViewSet(ViewSet):
             return Response(user_info)
         except Exception as e:
             return Response({'error': 'An error occurred', 'details': str(e)}, status=500)
+
+
+class RedditAuthViewSet(ViewSet):
+
+    @action(detail=False, methods=['get'], url_path='generate-url')
+    def generate_reddit_url(self, request):
+        params = {
+            'response_type': 'code',
+            'client_id': settings.REDDIT_CLIENT_ID,
+            'redirect_uri': settings.REDDIT_REDIRECT_URI,
+            'scope': 'identity',
+            'state': 'random_string_for_csrf_protection',
+            'duration': 'temporary',
+        }
+        url = f"{settings.REDDIT_AUTH_URL}?{urllib.parse.urlencode(params)}"
+        return Response({'url': url})
+
+    @action(detail=False, methods=['get'], url_path='callback')
+    def reddit_callback(self, request):
+        code = request.GET.get('code')
+        if not code:
+            return Response({'error': 'Missing authorization code'}, status=400)
+        token_data = {
+            'grant_type': 'authorization_code',
+            'code': code,
+            'redirect_uri': settings.REDDIT_REDIRECT_URI,
+        }
+        client_creds = f"{settings.REDDIT_CLIENT_ID}:{settings.REDDIT_CLIENT_SECRET}"
+        client_creds_base64 = base64.b64encode(client_creds.encode()).decode()
+
+        headers = {
+            'Authorization': f'Basic {client_creds_base64}',
+            'User-Agent': 'YourAppName/1.0 by YourRedditUsername',
+        }
+        token_response = requests.post(
+            settings.REDDIT_TOKEN_URL,
+            data=token_data,
+            headers=headers
+        )
+
+        if token_response.status_code != 200:
+            return Response({'error': 'Failed to fetch access token'}, status=400)
+
+        access_token = token_response.json().get('access_token')
+        if not access_token:
+            return Response({'error': 'No access token received'}, status=400)
+        userinfo_headers = {
+            'Authorization': f'Bearer {access_token}',
+            'User-Agent': 'YourAppName/1.0 by YourRedditUsername',
+        }
+        userinfo_response = requests.get(settings.REDDIT_USERINFO_URL, headers=userinfo_headers)
+
+        if userinfo_response.status_code != 200:
+            return Response({'error': 'Failed to fetch user info'}, status=400)
+
+        return Response(userinfo_response.json())

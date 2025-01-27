@@ -153,3 +153,11 @@ TWITTER_REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
 TWITTER_AUTHORIZE_URL = 'https://api.twitter.com/oauth/authenticate'
 TWITTER_ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token'
 TWITTER_USERINFO_URL = 'https://api.twitter.com/1.1/account/verify_credentials.json'
+
+
+REDDIT_CLIENT_ID = 'xcjoRXPsY5_GaXe_st4Pzg'
+REDDIT_CLIENT_SECRET = 'vo7bKODfebdNnieC-MF6MmI9aLWkzg'
+REDDIT_REDIRECT_URI = 'http://localhost:8000/complete/reddit/callback/'
+REDDIT_AUTH_URL = 'https://www.reddit.com/api/v1/authorize'
+REDDIT_TOKEN_URL = 'https://www.reddit.com/api/v1/access_token'
+REDDIT_USERINFO_URL = 'https://oauth.reddit.com/api/v1/me'
